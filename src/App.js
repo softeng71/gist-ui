@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import React, { useState } from "react";
+
 import './App.css';
+import './components/Search';
+import Search from "./components/Search";
+import FavoriteGistsButton from './components/FavoriteGistsButton';
+import SearchResults from "./components/SearchResults";
 
 function App() {
-  return (
+    const [showResults, setShowResults] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isFavorites, setIsFavorites] = useState(false);
+
+    function showSearchResults(message, isFavorites) {
+        hideSearchResults();
+        setShowResults(true);
+        setSearchQuery(message);
+        setIsFavorites(isFavorites);
+    }
+
+    function hideSearchResults() {
+        setShowResults(false);
+        setSearchQuery("");
+        setIsFavorites(false);
+    }
+
+
+    return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Search triggerShowSearchResults={showSearchResults} />
+        <FavoriteGistsButton triggerShowSearchResults={showSearchResults} />
       </header>
+        {showResults ? <SearchResults searchQuery={searchQuery} favs={isFavorites} /> : ""}
     </div>
   );
 }
